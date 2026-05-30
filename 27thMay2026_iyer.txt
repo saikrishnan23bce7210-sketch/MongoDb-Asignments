@@ -1,0 +1,51 @@
+use inventory
+
+db.gadgets.drop()
+
+db.gadgets.insertMany([
+{ "_id":1, "name":"AlphaPhone", "price":749, "releaseDate":ISODate("2012-03-10"), "spec":{"ram":6,"screen":6.4,"cpu":2.8}, "color":["black","silver"], "storage":[128,256]},
+{ "_id":2, "name":"AlphaTab", "price":949, "releaseDate":ISODate("2014-08-20"), "spec":{"ram":12,"screen":10.1,"cpu":3.5}, "color":["black","blue"], "storage":[256,512]},
+{ "_id":3, "name":"NeoPad", "price":849, "releaseDate":ISODate("2018-06-15"), "spec":{"ram":8,"screen":9.8,"cpu":3.2}, "color":["green"], "storage":[64,128,256]},
+{ "_id":4, "name":"NeoPhone", "price":649, "releaseDate":ISODate("2021-11-01"), "spec":{"ram":6,"screen":6.1,"cpu":2.4}, "color":["white","gold"], "storage":[128,256]}
+])
+
+db.gadgets.find({price:{$gte:800}},{name:1,price:1})
+
+db.gadgets.find({"spec.screen":{$gte:9.8}},{name:1,"spec.screen":1})
+
+db.gadgets.find({storage:{$gte:512}},{name:1,storage:1})
+
+db.gadgets.find({releaseDate:{$gte:new ISODate('2021-01-01')}},{name:1,releaseDate:1})
+
+db.gadgets.find({price:{$ne:849}},{name:1,price:1})
+
+db.gadgets.find({color:{$in:["black","white"]}},{name:1,color:1})
+
+db.gadgets.find({price:{$in:[649,749]}},{name:1,price:1})
+
+db.gadgets.find({price:{$nin:[649,749]}},{name:1,price:1})
+
+db.gadgets.find({
+$and:[
+{price:949},
+{color:{$in:["blue"]}}
+]
+},{name:1,price:1})
+
+db.gadgets.find({
+$or:[
+{price:649},
+{price:949}
+]
+},{name:1,price:1})
+
+db.gadgets.find({
+name:{$not:/^Neo+/}
+},{name:1})
+
+db.gadgets.find({
+$nor:[
+{price:949},
+{color:"gold"}
+]
+},{name:1,price:1,color:1})
