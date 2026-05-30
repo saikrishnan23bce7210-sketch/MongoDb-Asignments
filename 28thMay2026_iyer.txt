@@ -1,0 +1,84 @@
+use storedb
+
+db.devices.drop()
+
+db.devices.insertMany([
+{ "_id":1, "name":"NovaPhone", "price":749, "releaseDate":ISODate("2013-02-10T00:00:00Z"), "spec":{"ram":6,"screen":6.3,"cpu":2.8}, "color":["black","silver"], "storage":[128,256]},
+{ "_id":2, "name":"NovaTab", "price":899, "releaseDate":ISODate("2015-08-15T00:00:00Z"), "spec":{"ram":12,"screen":10.2,"cpu":3.4}, "color":["blue","black"], "storage":[256,512]},
+{ "_id":3, "name":"UltraPad", "price":999, "releaseDate":ISODate("2018-04-20T00:00:00Z"), "spec":{"ram":16,"screen":11.0,"cpu":3.8}, "color":["green"], "storage":[128,256,512]},
+{ "_id":4, "name":"UltraPhone", "price":649, "releaseDate":ISODate("2022-01-12T00:00:00Z"), "spec":{"ram":8,"screen":6.1,"cpu":2.5}, "color":["white","gold"], "storage":[128,256]},
+{ "_id":5, "name":"MiniTab", "price":null, "spec":{"ram":4,"screen":7.0,"cpu":2.1}, "color":["gray"], "storage":[64]}
+])
+
+db.devices.find({price:{$exists:true}},{name:1,price:1})
+
+db.devices.find({
+price:{
+$exists:true,
+$gt:700
+}
+},{name:1,price:1})
+
+db.devices.find({
+price:{
+$exists:false
+}
+},{name:1,price:1})
+
+db.devices.drop()
+
+db.devices.insertMany([
+{ "_id":1, "name":"NovaPhone", "price":"749"},
+{ "_id":2, "name":"NovaTab", "price":NumberInt(899)},
+{ "_id":3, "name":"UltraPad", "price":NumberLong("999")},
+{ "_id":4, "name":"UltraPhone", "price":[599,649,749]},
+{ "_id":5, "name":"MiniTab", "price":["499",599]}
+])
+
+db.devices.find({price:{$type:"string"}},{name:1,price:1})
+
+db.devices.find({price:{$type:2}},{name:1,price:1})
+
+db.devices.find({price:{$type:"number"}},{name:1,price:1})
+
+db.devices.find({price:{$type:"array"}},{name:1,price:1})
+
+db.devices.find({price:{$type:["number","string"]}},{name:1,price:1})
+
+db.devices.drop()
+
+db.devices.insertMany([
+{ "_id":1, "name":"NovaPhone", "color":["black","silver"], "storage":[128,256]},
+{ "_id":2, "name":"NovaTab", "color":["blue","black","white"], "storage":[256,512]},
+{ "_id":3, "name":"UltraPad", "color":["green"], "storage":[64,128]},
+{ "_id":4, "name":"UltraPhone", "color":["white","gold"], "storage":[128,256,512]}
+])
+
+db.devices.find({color:{$size:2}},{name:1,color:1})
+
+db.devices.find({
+$or:[
+{color:{$size:1}},
+{color:{$size:2}}
+]
+},{name:1,color:1})
+
+db.devices.find({
+color:{$all:["black","silver"]}
+},{name:1,color:1})
+
+db.devices.find({
+storage:{
+$elemMatch:{
+$lt:128
+}
+}
+},{name:1,storage:1})
+
+db.devices.find({
+color:{$exists:true}
+},{name:1,color:1}).sort({name:1})
+
+db.devices.find({
+color:{$exists:true}
+},{name:1,color:1}).sort({name:-1})
