@@ -1,0 +1,62 @@
+use inventorydb
+
+db.gadgets.drop()
+
+db.gadgets.insertMany([
+{ "_id":1, "name":"NovaPhone", "price":749, "releaseDate":ISODate("2013-02-10"), "spec":{"ram":6,"screen":6.3,"cpu":2.8}, "color":["black","silver"], "storage":[128,256]},
+{ "_id":2, "name":"NovaTab", "price":949, "releaseDate":ISODate("2015-08-15"), "spec":{"ram":12,"screen":10.2,"cpu":3.4}, "color":["blue","black"], "storage":[256,512]},
+{ "_id":3, "name":"UltraPad", "price":899, "releaseDate":ISODate("2018-04-20"), "spec":{"ram":16,"screen":11.0,"cpu":3.8}, "color":["green"], "storage":[128,256,512]},
+{ "_id":4, "name":"UltraPhone", "price":649, "releaseDate":ISODate("2022-01-12"), "spec":{"ram":8,"screen":6.1,"cpu":2.5}, "color":["white","gold"], "storage":[128,256]},
+{ "_id":5, "name":"MiniTab", "price":549, "releaseDate":ISODate("2023-05-10"), "spec":{"ram":4,"screen":7.0,"cpu":2.0}, "color":["gray"], "storage":[64,128]}
+])
+
+db.gadgets.find({price:{$exists:1}},{name:1,price:1}).sort({price:1})
+
+db.gadgets.find({price:{$exists:1}},{name:1,price:1}).sort({price:-1})
+
+db.gadgets.find({price:{$exists:1}},{name:1,price:1}).sort({price:1,name:1})
+
+db.gadgets.find({price:{$exists:1}},{name:1,price:1}).sort({price:1,name:-1})
+
+db.gadgets.find({releaseDate:{$exists:1}},{name:1,releaseDate:1}).sort({releaseDate:1})
+
+db.gadgets.find({releaseDate:{$exists:1}},{name:1,releaseDate:1}).sort({releaseDate:-1})
+
+db.gadgets.find({},{name:1,spec:1}).sort({"spec.ram":1})
+
+db.gadgets.find({},{name:1,price:1}).sort({price:-1}).limit(1)
+
+db.gadgets.find({},{name:1,price:1}).sort({price:-1,name:1}).limit(1)
+
+db.gadgets.find({},{name:1,price:1}).sort({price:-1,name:1}).skip(1).limit(2)
+
+db.gadgets.updateOne({_id:1},{$set:{price:849}})
+
+db.gadgets.updateOne({_id:4},{
+$set:{
+"spec.ram":12,
+"spec.screen":6.8,
+"spec.cpu":3.0
+}
+})
+
+db.gadgets.updateMany(
+{price:{$gt:700}},
+{$set:{
+"spec.ram":24,
+"spec.screen":10.0,
+"spec.cpu":4.5
+}}
+)
+
+db.gadgets.updateOne({_id:1},{$inc:{price:100}})
+
+db.gadgets.updateOne({_id:1},{$inc:{price:-50,"spec.ram":2}})
+
+db.gadgets.updateOne({_id:5},{$min:{price:499}})
+
+db.gadgets.updateOne({_id:1},{$max:{price:999}})
+
+db.gadgets.find({_id:1},{name:1,price:1,"spec.ram":1})
+
+db.gadgets.find({_id:5},{name:1,price:1})
