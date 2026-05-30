@@ -1,0 +1,72 @@
+show databases;
+
+use vitcampus2;
+show tables from vitcampus2;
+desc cse;
+select * from cse;
+
+ALTER TABLE cse ADD(
+department varchar(30)
+);
+
+insert into cse values (111,'Ramya','CSE');
+
+alter table cse drop column department;
+
+ALTER TABLE cse ADD(
+country varchar(20) default 'India'
+);
+
+alter table cse rename column country to location;
+
+select * from eee;
+delete from eee;
+
+CREATE TABLE Worker (
+    WORKER_ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    FIRST_NAME CHAR(25),
+    LAST_NAME CHAR(25),
+    SALARY INT(15),
+    JOINING_DATE DATETIME,
+    DEPARTMENT CHAR(25)
+);
+
+select * from worker;
+
+INSERT INTO Worker (WORKER_ID, FIRST_NAME, LAST_NAME, SALARY, JOINING_DATE, DEPARTMENT) VALUES
+(1, 'Monika', 'Arora', 100000, '14-02-20 09.00.00', 'HR'),
+(2, 'Niharika', 'Verma', 80000, '14-06-11 09.00.00', 'Admin'),
+(3, 'Vishal', 'Singhal', 300000, '14-02-20 09.00.00', 'HR'),
+(4, 'Amitabh', 'Singh', 500000, '14-02-20 09.00.00', 'Admin'),
+(5, 'Vivek', 'Bhati', 500000, '14-06-11 09.00.00', 'Admin'),
+(6, 'Vipul', 'Diwan', 200000, '14-06-11 09.00.00', 'Account'),
+(7, 'Satish', 'Kumar', 75000, '14-01-20 09.00.00', 'Account'),
+(8, 'Geetika', 'Chauhan', 90000, '14-04-11 09.00.00', 'Admin');
+
+update worker set first_name='Jayanth', last_name='V' where worker_id=1;
+update worker set salary = salary + 4000;
+delete from worker where worker_id=8;
+
+create table emp1(id int);
+
+START TRANSACTION;
+insert into emp1 values(10);
+SAVEPOINT A;
+insert into emp1 values(11);
+SAVEPOINT B;
+insert into emp1 values(12);
+rollback to A;
+select * from emp1;
+commit;
+
+select first_name, department from worker where worker_id=1;
+select first_name, salary, department from worker where salary > 100000;
+select first_name, salary, department from worker where salary > 100000 and department='Admin';
+select first_name, salary, department from worker where salary > 100000 or department='Admin';
+
+SELECT * FROM Worker WHERE DEPARTMENT='HR';
+SELECT * FROM Worker WHERE DEPARTMENT!='Admin';
+SELECT * FROM Worker WHERE SALARY>100000;
+SELECT * FROM Worker WHERE SALARY<90000;
+SELECT * FROM Worker WHERE SALARY>=200000;
+SELECT * FROM Worker WHERE SALARY<=80000;
