@@ -1,0 +1,64 @@
+﻿myReplSet
+
+
+
+
+mkdir -p ~/mongodb-replica/db0
+mkdir -p ~/mongodb-replica/db1
+mkdir -p ~/mongodb-replica/db2
+
+
+
+ls ~/mongodb-replica
+OUTPUT:
+db0
+db1
+db2
+
+
+
+which mongod
+LOCATION:
+/usr/local/bin/mongod
+
+
+IN TERMINAL 1:
+mongod --replSet myReplSet \
+--dbpath ~/mongodb-replica/db0 \
+--port 27017
+
+
+IN TERMINAL 2:
+mongod --replSet myReplSet \
+--dbpath ~/mongodb-replica/db1 \
+--port 27018
+
+
+IN TERMINAL 3:
+mongod --replSet myReplSet \
+--dbpath ~/mongodb-replica/db2 \
+--port 27019
+
+
+MONGO COMMANDS:
+mongosh --port 27017
+
+rs.initiate({
+    _id: "myReplSet",
+    members: [
+        { _id: 0, host: "localhost:27017" },
+        { _id: 1, host: "localhost:27018" },
+        { _id: 2, host: "localhost:27019" }
+    ]
+})
+
+OUTPUT:
+{ ok: 1 }
+
+
+rs.status()
+
+OUTPUT:
+PRIMARY
+SECONDARY
+SECONDARY
